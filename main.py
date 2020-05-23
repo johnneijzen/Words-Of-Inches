@@ -15,10 +15,16 @@ async def on_member_join(member):
     fmt = 'Welcome {0.mention} to The Holy Church of the Inch God!'
     await channel.send(fmt.format(member))
 
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=40)
 async def message_of_the_day():
     channel = client.get_channel(712996600573722657)
     msg = ['Pollute not thy mind with the heresy of false gods', 'Thou shall respect all living things that have sprung up from the seed of the great Heyrosa (except Kpop stans they are an abomination unto the great Lord)']
     await channel.send(msg[random.randint(0,1)])
 
+@message_of_the_day.before_loop
+async def before():
+    await client.wait_until_ready()
+    print("Finished waiting")
+
+message_of_the_day.start()
 client.run('token')
